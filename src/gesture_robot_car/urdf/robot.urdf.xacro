@@ -1,0 +1,133 @@
+﻿<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="gesture_robot">
+
+    <!-- ===================================== -->
+    <!-- 1. ROBOT DIMENSIONS (METRES)           -->
+    <!-- ===================================== -->
+
+    <xacro:property name="chassis_length" value="0.18"/>
+    <xacro:property name="chassis_width" value="0.14"/>
+    <xacro:property name="chassis_height" value="0.035"/>
+
+    <xacro:property name="wheel_radius" value="0.032"/>
+    <xacro:property name="wheel_width" value="0.018"/>
+
+    <!-- Wheel mounting positions -->
+    <xacro:property name="wheel_x" value="0.060"/>
+    <xacro:property name="wheel_y" value="0.080"/>
+    <xacro:property name="wheel_z" value="-0.0055"/>
+
+    <!-- ===================================== -->
+    <!-- 2. MAIN ROBOT CHASSIS                  -->
+    <!-- ===================================== -->
+
+    <link name="base_link">
+
+        <visual>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+
+            <material name="blue">
+                <color rgba="0.05 0.25 0.75 1.0"/>
+            </material>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="1.0"/>
+
+            <inertia
+            ixx="0.001735"
+            ixy="0"
+            ixz="0"
+            iyy="0.002802"
+            iyz="0"
+            izz="0.004333"/>
+        </inertial>
+
+    </link>
+
+    <!-- ===================================== -->
+    <!-- 3. WHEEL CREATION MACRO                -->
+    <!-- ===================================== -->
+
+    <xacro:macro name="wheel" params="name x y">
+
+        <link name="${name}">
+
+            <visual>
+                <origin xyz="0 0 0" rpy="1.5707963 0 0"/>
+
+                <geometry>
+                    <cylinder radius="${wheel_radius}"
+                              length="${wheel_width}"/>
+                </geometry>
+
+                <material name="black">
+                    <color rgba="0.08 0.08 0.08 1.0"/>
+                </material>
+            </visual>
+
+            <collision>
+                <origin xyz="0 0 0" rpy="1.5707963 0 0"/>
+
+                <geometry>
+                    <cylinder radius="${wheel_radius}"
+                              length="${wheel_width}"/>
+                </geometry>
+            </collision>
+
+            <inertial>
+                <mass value="0.08"/>
+
+                <inertia
+                    ixx="0.00002264"
+                    ixy="0"
+                    ixz="0"
+                    iyy="0.00004096"
+                    iyz="0"
+                    izz="0.00002264"/>
+            </inertial>
+
+        </link>
+
+        <!-- Continuous joint allows unlimited wheel rotation -->
+
+        <joint name="${name}_joint" type="continuous">
+
+            <parent link="base_link"/>
+            <child link="${name}"/>
+
+            <origin xyz="${x} ${y} ${wheel_z}"
+                    rpy="0 0 0"/>
+
+            <axis xyz="0 1 0"/>
+
+        </joint>
+
+    </xacro:macro>
+
+    <!-- ===================================== -->
+    <!-- 4. CREATE FOUR ROBOT WHEELS            -->
+    <!-- ===================================== -->
+
+    <xacro:wheel name="front_left_wheel"
+                 x="${wheel_x}" y="${wheel_y}"/>
+
+    <xacro:wheel name="front_right_wheel"
+                 x="${wheel_x}" y="${-wheel_y}"/>
+
+    <xacro:wheel name="rear_left_wheel"
+                 x="${-wheel_x}" y="${wheel_y}"/>
+
+    <xacro:wheel name="rear_right_wheel"
+                 x="${-wheel_x}" y="${-wheel_y}"/>
+
+</robot>

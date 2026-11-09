@@ -1,0 +1,30 @@
+
+## Step 3: Populate .gitignore
+
+Open `.gitignore` and paste:
+
+```gitignore
+# ROS 2 build files
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Operating system
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
