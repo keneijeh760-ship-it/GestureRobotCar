@@ -9,11 +9,9 @@ find_package(ament_cmake REQUIRED)
 install(
     DIRECTORY
         urdf/
-        meshes/
         worlds/
         launch/
         config/
-        scripts/
     DESTINATION share/${PROJECT_NAME}
 )
 
